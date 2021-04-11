@@ -36,10 +36,7 @@ class RecyclerViewAdapter(val listener: RowClickListener): RecyclerView.Adapter<
         val tvTitle = view.tvTitle
         val tvDesc = view.tvDesc
         val deleteUserID = view.deleteUserID
-
-        if(tvTitle.isEmpty(): Boolean == false){
-
-        }
+        
         fun bind(data: UserEntity){
             tvTitle.text = data.title
             tvDesc.text = data.desc
