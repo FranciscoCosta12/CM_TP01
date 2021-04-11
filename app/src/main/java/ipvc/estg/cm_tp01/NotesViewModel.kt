@@ -1,44 +1,53 @@
 package ipvc.estg.cm_tp01
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ipvc.estg.cm_tp01.db.NoteEntity
 import ipvc.estg.cm_tp01.db.NotesDb
-import ipvc.estg.cm_tp01.db.UserEntity
 
 class NotesViewModel(app: Application): AndroidViewModel(app)  {
-    lateinit var allUsers : MutableLiveData<List<UserEntity>>
+
+    lateinit var allNotes : MutableLiveData<List<NoteEntity>>
 
     init{
-        allUsers = MutableLiveData()
+        allNotes = MutableLiveData()
     }
 
-    fun getAllUsersObservers(): MutableLiveData<List<UserEntity>> {
-        return allUsers
+    fun getAllNotesObservers(): MutableLiveData<List<NoteEntity>> {
+        return allNotes
     }
 
-    fun getAllUsers(){
-        val userDao = NotesDb.getAppDatabase((getApplication()))?.userDao()
-        val list = userDao?.getAllUserInfo()
+    fun getAllNotes(){
+        val noteDao = NotesDb.getAppDatabase((getApplication()))?.notesDao()
+        val list = noteDao?.getAllNoteInfo()
 
-        allUsers.postValue(list)
+        allNotes.postValue(list)
     }
 
-    fun insertUserInfo(entity: UserEntity){
-        val userDao = NotesDb.getAppDatabase(getApplication())?.userDao()
-        userDao?.insertUser(entity)
-        getAllUsers()
+    fun isNullOrEmpty(str: String?): Boolean {
+        if (str != null && !str.trim().isEmpty())
+            return false
+        return true
     }
 
-    fun updateUserInfo(entity: UserEntity){
-        val userDao = NotesDb.getAppDatabase(getApplication())?.userDao()
-        userDao?.updateUser(entity)
-        getAllUsers()
+    fun insertNoteInfo(entity: NoteEntity){
+        val noteDao = NotesDb.getAppDatabase(getApplication())?.notesDao()
+        noteDao?.insertNote(entity)
+        getAllNotes()
     }
 
-    fun deleteUserInfo(entity: UserEntity){
-        val userDao = NotesDb.getAppDatabase(getApplication())?.userDao()
-        userDao?.deleteUser(entity)
-        getAllUsers()
+    fun updateNoteInfo(entity: NoteEntity){
+        val noteDao = NotesDb.getAppDatabase(getApplication())?.notesDao()
+        noteDao?.updateNote(entity)
+        getAllNotes()
+    }
+
+    fun deleteNoteInfo(entity: NoteEntity){
+        val noteDao = NotesDb.getAppDatabase(getApplication())?.notesDao()
+        noteDao?.deleteNote(entity)
+        getAllNotes()
     }
 }

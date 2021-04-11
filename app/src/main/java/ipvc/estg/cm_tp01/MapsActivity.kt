@@ -80,12 +80,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 lastLocation = p0.lastLocation
                 var loc = LatLng(lastLocation.latitude, lastLocation.longitude)
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15.0f))
+                /*
                 findViewById<TextView>(R.id.txtcoordenadas).setText("Lat:" + loc.latitude + " - Long: " + loc.longitude)
                 val address = getAddress(lastLocation.latitude, lastLocation.longitude)
                 findViewById<TextView>(R.id.txtmorada).setText("Morada: "+ address)
                 findViewById<TextView>(R.id.txtdistancia).setText("Distância: " + calculateDistance(
                         lastLocation.latitude, lastLocation.longitude,
                         continenteLat, continenteLong).toString())
+
+                 */
             }
         }
 
@@ -110,9 +113,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
 
-        setUpMap()
+        //setUpMap()
     }
-
+ /*
     fun setUpMap(){
 
         if(ActivityCompat.checkSelfPermission(this,
@@ -138,6 +141,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+  */
+
     private fun createLocationRequest(){
         locationRequest = LocationRequest()
 
@@ -152,7 +157,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     public override fun onResume() {
         super.onResume()
-        startLocationUpdates()
+        //startLocationUpdates()
     }
 
     private fun getAddress(lat: Double, lng: Double): String {
@@ -166,7 +171,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         Location.distanceBetween(lat1,lng1,lat2,lng2,results)
         return results[0]
     }
-
+/*
     private fun startLocationUpdates() {
         if(ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
@@ -178,5 +183,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
+
+ */
 
 }
