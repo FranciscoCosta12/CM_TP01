@@ -2,13 +2,15 @@ package ipvc.estg.cm_tp01
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils.isEmpty
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ipvc.estg.cm_tp01.adapter.RecyclerViewAdapter
-import ipvc.estg.cm_tp01.db.UserEntity
+import ipvc.estg.cm_tp01.db.NoteEntity
 import kotlinx.android.synthetic.main.activity_notes.*
 
 class Notes : AppCompatActivity() , RecyclerViewAdapter.RowClickListener {
@@ -28,36 +30,46 @@ class Notes : AppCompatActivity() , RecyclerViewAdapter.RowClickListener {
         }
 
         viewModel = ViewModelProviders.of(this).get(NotesViewModel::class.java)
-        viewModel.getAllUsersObservers().observe(this, Observer{
+        viewModel.getAllNotesObservers().observe(this, Observer{
             recyclerViewAdapter.setListData(ArrayList(it))
             recyclerViewAdapter.notifyDataSetChanged()
         })
 
         saveButton.setOnClickListener{
-            val name = titleInput.text.toString()
-            val email = descInput.text.toString()
+            val title = titleInput.text.toString()
+            val desc = descInput.text.toString()
 
             if(saveButton.text.equals("Save")){
-                val user = UserEntity(0,name, email)
-                viewModel.insertUserInfo(user)
+                if(isEmpty(title) || isEmpty(desc)){
+                    Toast.makeText(this@Notes, "Cannot fill in empty fields!",Toast.LENGTH_SHORT).show()
+                }else{
+                    val note = NoteEntity(0,title, desc)
+                    viewModel.insertNoteInfo(note)
+                }
+
             }else{
-                val user = UserEntity(titleInput.getTag(titleInput.id).toString().toInt(), name, email)
-                viewModel.updateUserInfo(user)
-                saveButton.setText("Save")
+                if(isEmpty(title) || isEmpty(desc)){
+                    Toast.makeText(this@Notes, "Cannot fill in empty fields!",Toast.LENGTH_SHORT).show()
+                }else{
+                    val note = NoteEntity(titleInput.getTag(titleInput.id).toString().toInt(), title, desc)
+                    viewModel.updateNoteInfo(note)
+                    saveButton.setText("Save")
+                }
+
             }
             titleInput.setText("")
             descInput.setText("")
         }
     }
 
-    override fun onDeleteUserClickListener(user: UserEntity) {
-        viewModel.deleteUserInfo(user)
+    override fun onDeleteNoteClickListener(note: NoteEntity) {
+        viewModel.deleteNoteInfo(note)
     }
 
-    override fun onItemClickListener(user: UserEntity) {
-        titleInput.setText(user.title)
-        descInput.setText(user.desc)
-        titleInput.setTag(titleInput.id, user.id)
+    override fun onItemClickListener(note: NoteEntity) {
+        titleInput.setText(note.title)
+        descInput.setText(note.desc)
+        titleInput.setTag(titleInput.id, note.id)
         saveButton.setText("Update")
     }
 }

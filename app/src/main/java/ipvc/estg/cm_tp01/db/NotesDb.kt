@@ -4,14 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import kotlinx.coroutines.CoroutineScope
 
-@Database(entities = [UserEntity::class], version = 1)
+@Database(entities = [NoteEntity::class], version = 1)
 abstract class NotesDb : RoomDatabase() {
 
 
-    abstract fun userDao():UserDao?
+    abstract fun notesDao():NotesDao?
 
     companion object {
+
+        @Volatile
         private var INSTANCE: NotesDb?= null
 
         fun getAppDatabase(context: Context): NotesDb?{
